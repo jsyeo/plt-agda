@@ -79,3 +79,29 @@ module plta.Properties where
       n + (suc m + p)
     ∎
 -}
+
+  *-identity : ∀ (m : ℕ) → m * 0 ≡ 0
+  *-identity zero = refl
+  *-identity (suc m) rewrite *-identity m = refl
+
+  *-distrib-+ : ∀ (m n p : ℕ) → (m + n) * p ≡ m * p + n * p
+  *-distrib-+ zero n p = refl
+  *-distrib-+ (suc m) n p rewrite *-distrib-+ m n p | +-assoc p (m * p) (n * p) = refl
+
+  *-suc : ∀ (m n : ℕ) → m * suc n ≡ m + (m * n)
+  *-suc zero n = refl
+  *-suc (suc m) n rewrite *-suc m n | +-swap n m (m * n) = refl
+  
+  *-comm : ∀ (m n : ℕ) → m * n ≡ n * m
+  *-comm m zero rewrite *-identity m = refl
+  *-comm m (suc n) rewrite *-suc m n | *-comm m n = refl
+
+  ∸-zero-monus-n : ∀ (n : ℕ) → 0 ∸ n ≡ 0
+  ∸-zero-monus-n zero = refl
+  ∸-zero-monus-n (suc n) = refl
+
+  ∸-+-assoc : ∀ (m n p : ℕ ) → m ∸ n ∸ p ≡ m ∸ (n + p)
+  ∸-+-assoc zero n p rewrite ∸-zero-monus-n n | ∸-zero-monus-n p | ∸-zero-monus-n (n + p) = refl
+  ∸-+-assoc (suc m) zero p = refl
+  ∸-+-assoc (suc m) (suc n) p rewrite ∸-+-assoc m n p = refl
+  
